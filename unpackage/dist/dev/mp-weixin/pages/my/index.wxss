@@ -1,0 +1,161 @@
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 顶部导航高度 */
+/* 底部安全高度 */
+/* padding间距 */
+/* margin间距 */
+/* 文字大小 */
+/* 文字颜色 */
+/* 背景颜色 */
+/* 圆角 */
+/* 上下间距 */
+/* 盒子阴影 */
+.u-button.data-v-f97bc692 {
+  height: 80rpx;
+}
+.u-button--primary.data-v-f97bc692 {
+  background: linear-gradient(45deg, #febc22, #fa8208);
+  border: 0;
+}
+.u-button--primary .u-button__text.data-v-f97bc692 {
+  font-size: 36rpx !important;
+  letter-spacing: 10rpx;
+}
+.data-v-f97bc692 .uni-button:after {
+  content: "";
+  border: 0;
+}
+.u-navbar .u-status-bar.data-v-f97bc692, .u-navbar .u-navbar__content.data-v-f97bc692 {
+  background-color: #2979ff !important;
+}
+.u-navbar .u-status-bar .u-navbar__content__title.data-v-f97bc692, .u-navbar .u-navbar__content .u-navbar__content__title.data-v-f97bc692 {
+  color: #fff;
+}
+
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.data-v-f97bc692 .uni-tabbar-bottom .uni-tabbar__icon {
+  width: 48px;
+  height: 38px;
+}
+.my.data-v-f97bc692 {
+  background-color: #f1f5f6;
+  min-height: 100vh;
+}
+.my .my-head.data-v-f97bc692 {
+  position: relative;
+  height: 170px;
+}
+.my .my-head .img_usermesbg.data-v-f97bc692 {
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+}
+.my .my-head .my-login.data-v-f97bc692 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #fff;
+  padding: 5px 30px;
+  border-radius: 20px;
+}
+.my .my-head .my-login .login-text.data-v-f97bc692 {
+  font-size: 16px;
+  color: #fff;
+}
+.my .main.data-v-f97bc692 {
+  position: relative;
+  padding: 0 40rpx;
+  margin-top: -30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+.my .main .selectmes.data-v-f97bc692, .my .main .ordermes.data-v-f97bc692 {
+  padding: 20rpx;
+  background-color: #fff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+.my .main .ordermes .orderall.data-v-f97bc692 {
+  border-bottom: 1px solid #f0e5e5;
+}
+.my .main .ordermes .orderall.data-v-f97bc692, .my .main .ordermes .vipmes.data-v-f97bc692 {
+  display: flex;
+  gap: 20rpx;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+}
+.my .main .ordermes .orderall .order-item.data-v-f97bc692, .my .main .ordermes .vipmes .order-item.data-v-f97bc692 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  align-items: center;
+}
+.my .main .ordermes .orderall .order-item .item-icon.data-v-f97bc692, .my .main .ordermes .vipmes .order-item .item-icon.data-v-f97bc692 {
+  width: 24px;
+  height: 24px;
+}
+.my .main .ordermes .orderall .order-item .item-num.data-v-f97bc692, .my .main .ordermes .vipmes .order-item .item-num.data-v-f97bc692 {
+  font-size: 28rpx;
+  color: #2979ff;
+}
+.my .main .ordermes .orderall .order-item .item-text.data-v-f97bc692, .my .main .ordermes .vipmes .order-item .item-text.data-v-f97bc692 {
+  font-size: 26rpx;
+  color: #333333;
+}
+.my .main .selectmes.data-v-f97bc692 {
+  display: flex;
+  flex-wrap: wrap;
+  /* 自动换行 关键！ */
+  padding: 0;
+}
+.my .main .selectmes .selectmes-item.data-v-f97bc692 {
+  position: relative;
+  width: 25%;
+  /* 减一点间距，避免挤不下 */
+  font-size: 28rpx;
+  color: #333333;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  align-items: center;
+  border-right: 1px solid #f0e5e5;
+  border-bottom: 1px solid #f0e5e5;
+  box-sizing: border-box;
+  padding: 40rpx 0;
+}
+.my .main .selectmes .selectmes-item .item-icon.data-v-f97bc692 {
+  width: 24px;
+  height: 24px;
+}
+.my .main .selectmes .selectmes-item.data-v-f97bc692:nth-child(n+5) {
+  border-bottom: 0;
+}
+.my .main .selectmes .selectmes-item.data-v-f97bc692:nth-child(4), .my .main .selectmes .selectmes-item.data-v-f97bc692:nth-child(8) {
+  border-right: 0;
+}

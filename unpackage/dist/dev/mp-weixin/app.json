@@ -1,0 +1,46 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/animation/animation",
+    "pages/my/index",
+    "pages/selectCity/index",
+    "pages/tickets/index",
+    "pages/order/index",
+    "pages/login/login"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#CBCBCB",
+    "selectedColor": "#000",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/tabbar/icon_home_nor.png",
+        "selectedIconPath": "static/tabbar/download.png"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的",
+        "iconPath": "static/tabbar/icon_selfinfo_nor.png",
+        "selectedIconPath": "static/tabbar/icon_selfinfo_sel.png"
+      }
+    ]
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于获取当前位置"
+    }
+  },
+  "usingComponents": {}
+}

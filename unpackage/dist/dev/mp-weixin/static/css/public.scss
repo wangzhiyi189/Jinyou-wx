@@ -1,0 +1,124 @@
+// 主题颜色
+$w-theme-color2:rgb(252, 224, 64);
+$w-theme-color:#2979ff;
+$w-theme-background:rgb(244, 241, 219);
+$w-theme-size-color:rgb(255, 165, 0);
+$w-button-color:linear-gradient(45deg, #febc22, #fa8208);
+$w-red-color:#fa3534;
+/* 顶部导航高度 */
+$w-navbar-height:44px;
+/* 底部安全高度 */
+$w-tabbar-height:60px;
+/* padding间距 */
+$w-padding-sm:10rpx;
+$w-padding-base: 20rpx;
+$w-padding-lg: 30rpx;
+$w-padding-big:40rpx;
+
+/* margin间距 */
+$w-margin-sm:10rpx;
+$w-margin-base: 20rpx;
+$w-margin-lg: 30rpx;
+$w-margin-big:4r0px;
+
+/* 文字大小 */
+$w-size-sm:24rpx;
+$w-size-smx:26rpx;
+$w-size-base: 28rpx;
+$w-size-lg: 32rpx;
+$w-size-big:36rpx;
+$w-size-max:40rpx;
+
+/* 文字颜色 */
+$w-font-color-main:#007aff;
+$w-font-color-dark:#000000;
+$w-font-color-deep:#333333;
+$w-font-color-shallow:#666;
+$w-font-color-light:#999999;
+$w-font-color-error: #dd524d;
+$w-font-color-white:#fff;
+/* 背景颜色 */
+$w-background-color:#f5f5f5; 
+$w-card-color:#fff;
+$w-card-deep:#222;
+$w-border-color:#f0e5e5;
+/* 圆角 */
+$w-border-sm:10rpx;
+
+/* 上下间距 */
+$w-gap-sm:10rpx;
+$w-gap-base:20rpx;
+$w-gap-lg: 30rpx;
+$w-gap-big:40rpx;
+$w-gap-max:60rpx;
+/* 盒子阴影 */
+$w-shadow:0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.05);
+
+// 超出隐藏
+@mixin ellipsis-style(
+  $num: 1,  // 行数
+) {
+  display: -webkit-box;
+	word-break: break-all;
+	-webkit-box-orient: vertical;
+  overflow: hidden;    /* 隐藏超出容器的内容 */
+  text-overflow: ellipsis;
+	-webkit-line-clamp: $num;
+}
+
+@mixin flex-style(
+  $gap: $w-gap-sm,  // 行数
+) {
+  display:flex;
+  gap:$gap;
+}
+@mixin flex-center-style(
+  $gap: $w-gap-sm,  // 行数
+) {
+  display:flex;
+  align-items: center;
+  gap:$gap;
+}
+@mixin flex-content-style(
+  $gap: $w-gap-sm,  // 行数
+) {
+  display:flex;
+  gap:$gap;
+  justify-content: space-between;
+  align-items: center;
+}
+@mixin flex-column-style(
+  $gap: $w-gap-sm,  // 行数
+) {
+  display:flex;
+  flex-direction: column;
+  gap:$gap;
+}
+
+.u-button{
+  height:80rpx;
+}
+// 按钮颜色
+.u-button--primary{
+  background: $w-button-color;
+  border:0;
+  .u-button__text{
+    font-size:$w-size-big!important;
+    letter-spacing: 10rpx;
+  }
+  
+}
+:deep(.uni-button:after){
+  content:'';
+  border:0;
+}
+
+// 导航栏颜色
+.u-navbar{
+  .u-status-bar , .u-navbar__content{
+    background-color:$w-theme-color!important;
+    .u-navbar__content__title{
+      color:#fff;
+    }
+  }
+}

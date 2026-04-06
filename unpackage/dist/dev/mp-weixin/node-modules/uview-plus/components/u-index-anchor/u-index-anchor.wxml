@@ -1,0 +1,1 @@
+<view class="{{['u-index-anchor', 'u-border-bottom', 'data-v-e7d138dd', d && 'u-index-anchor--sticky']}}" ref="{{e}}" style="{{'height:' + f + ';' + ('background-color:' + g)}}"><text class="u-index-anchor__text data-v-e7d138dd" style="{{'font-size:' + b + ';' + ('color:' + c)}}">{{a}}</text></view>

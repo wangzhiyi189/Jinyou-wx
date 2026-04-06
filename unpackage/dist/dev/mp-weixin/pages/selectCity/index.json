@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "u-navbar": "../../node-modules/uview-plus/components/u-navbar/u-navbar",
+    "u-index-anchor": "../../node-modules/uview-plus/components/u-index-anchor/u-index-anchor",
+    "u-index-item": "../../node-modules/uview-plus/components/u-index-item/u-index-item",
+    "u-index-list": "../../node-modules/uview-plus/components/u-index-list/u-index-list"
+  }
+}

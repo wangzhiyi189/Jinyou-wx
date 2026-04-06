@@ -1,0 +1,25 @@
+{
+  "hash": "144bc494",
+  "configHash": "e69026fd",
+  "lockfileHash": "4a9db83b",
+  "browserHash": "65eb47ed",
+  "optimized": {
+    "uview-plus": {
+      "src": "../../../../../node_modules/uview-plus/index.js",
+      "file": "uview-plus.js",
+      "fileHash": "5f2c05e2",
+      "needsInterop": false
+    },
+    "lunar-javascript": {
+      "src": "../../../../../node_modules/lunar-javascript/index.js",
+      "file": "lunar-javascript.js",
+      "fileHash": "56fce244",
+      "needsInterop": true
+    }
+  },
+  "chunks": {
+    "chunk-Y2F7D3TJ": {
+      "file": "chunk-Y2F7D3TJ.js"
+    }
+  }
+}
