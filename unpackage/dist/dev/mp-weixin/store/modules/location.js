@@ -1,13 +1,11 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const useLocationStore = common_vendor.defineStore("location", {
+  // 👇 【修改】给 state 明确指定类型，消除隐式 any 警告
   state: () => ({
-    // 当前经纬度
     latitude: null,
     longitude: null,
-    // 地址信息
     address: null,
-    // 详细地址
     province: null,
     city: null,
     district: null
@@ -20,9 +18,8 @@ const useLocationStore = common_vendor.defineStore("location", {
       return new Promise((resolve, reject) => {
         common_vendor.index.getLocation({
           type: "gcj02",
-          // 高德必须用这个
           success: (res) => {
-            common_vendor.index.__f__("log", "at store/modules/location.js:24", res);
+            common_vendor.index.__f__("log", "at store/modules/location.ts:33", res);
             this.latitude = res.latitude;
             this.longitude = res.longitude;
             resolve(res);
@@ -37,6 +34,7 @@ const useLocationStore = common_vendor.defineStore("location", {
     // ====================
     // 2. 高德逆地理编码（坐标转地址）
     // ====================
+    // 👇 【修改】给参数 lat,lng 加上类型：number
     async getAddressByCoords(lat, lng) {
       const amapKey = "58c792ca77861de43aef7c1e1e309bc7";
       return new Promise((resolve, reject) => {
@@ -45,10 +43,10 @@ const useLocationStore = common_vendor.defineStore("location", {
           data: {
             key: amapKey,
             location: `${lng},${lat}`,
-            // 注意：高德是 经度,纬度
             extensions: "base",
             output: "json"
           },
+          // 👇 【修改】res 增加类型，消除 any 警告
           success: (res) => {
             if (res.data.status === "1") {
               const info = res.data.regeocode;

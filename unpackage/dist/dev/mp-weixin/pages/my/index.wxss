@@ -104,9 +104,8 @@
 }
 .my .main .ordermes .orderall.data-v-f97bc692, .my .main .ordermes .vipmes.data-v-f97bc692 {
   display: flex;
+  justify-content: space-around;
   gap: 20rpx;
-  justify-content: space-between;
-  align-items: center;
   padding: 20rpx 0;
 }
 .my .main .ordermes .orderall .order-item.data-v-f97bc692, .my .main .ordermes .vipmes .order-item.data-v-f97bc692 {
@@ -131,13 +130,11 @@
 .my .main .selectmes.data-v-f97bc692 {
   display: flex;
   flex-wrap: wrap;
-  /* 自动换行 关键！ */
   padding: 0;
 }
 .my .main .selectmes .selectmes-item.data-v-f97bc692 {
   position: relative;
   width: 25%;
-  /* 减一点间距，避免挤不下 */
   font-size: 28rpx;
   color: #333333;
   display: flex;

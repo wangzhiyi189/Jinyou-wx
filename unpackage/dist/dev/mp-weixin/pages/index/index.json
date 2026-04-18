@@ -3,6 +3,8 @@
   "usingComponents": {
     "u-button": "../../node-modules/uview-plus/components/u-button/u-button",
     "u-calendar": "../../node-modules/uview-plus/components/u-calendar/u-calendar",
-    "recommend": "../../components/recommend/index"
+    "recommend": "../../components/recommend/index",
+    "top-banner-model": "./topBanner",
+    "banner-model": "./banner"
   }
 }

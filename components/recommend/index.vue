@@ -3,7 +3,7 @@
     <view class="title">
       <image class="icon" :src="recommendIcon"/>
       为您推荐
-      {{imgUrl}}
+      <!-- {{imgUrl}} -->
     </view>
     <view class="list">
       <view class="list-item" v-for="item in list" :key="item.id">
@@ -19,36 +19,48 @@
     </view>
   </view>
 </template>
-<script setup>
+
+<script setup lang="ts">
 import { ref } from 'vue'
 import recommendIcon from '@/static/images/public/recommend.png'
-// import hukou from '@/static/images/ceshi/hukou.png'
-// import xiaoxitian from '@/static/images/ceshi/xiaoxitian.png'
-// import yunqiushan from '@/static/images/ceshi/yunqiushan.png'
-const list = ref([
+
+// ===================== TS 改造备注：定义推荐列表项类型 =====================
+interface RecommendItem {
+  id: number;
+  title: string;
+  img: string;
+  address: string;
+}
+
+// ===================== TS 改造备注：给列表指定类型 =====================
+const list = ref<RecommendItem[]>([
   {
-    id:1,
-    title:'临汾-壶口瀑布',
-    img:'',
-    address:'吉县',
+    id: 1,
+    title: '临汾-壶口瀑布',
+    img: '',
+    address: '吉县',
   },
   {
-    id:2,
-    title:'临汾-小西天',
-    img:'',
-    address:'隰县',
+    id: 2,
+    title: '临汾-小西天',
+    img: '',
+    address: '隰县',
   },
   {
-    id:3,
-    title:'临汾-云丘山',
-    img:'',
-    address:'乡宁',
+    id: 3,
+    title: '临汾-云丘山',
+    img: '',
+    address: '乡宁',
   },
 ])
-const getImg = (name) => {
 
+// ===================== TS 改造备注：给函数参数 + 返回值加类型 =====================
+const getImg = (name: string): string => {
+  // 你后续可以在这里写逻辑
+  return ''
 }
 </script>
+
 <style lang="scss" scoped>
 .recommend{
   .title{
@@ -82,7 +94,7 @@ const getImg = (name) => {
       .item-address{
         position:absolute;
         top:70rpx;
-        left:2r0px;
+        left:20rpx; /* 修复你写错的 2r0px => 20rpx */
         padding:2px $w-padding-sm;
         border-radius: 20rpx;
         z-index: 995;

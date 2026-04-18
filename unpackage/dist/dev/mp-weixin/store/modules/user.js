@@ -1,27 +1,30 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-common_vendor.defineStore("main", {
-  // 状态（类似Vuex的state）
+common_vendor.defineStore("user", {
+  // 👉 给 state 明确指定类型
   state: () => ({
     themeColor: "rgb(255, 221, 0)",
     sizeColor: "rgb(255, 165, 0)",
-    cart: []
+    cart: [],
+    userInfo: null
   }),
-  // 计算属性（类似Vuex的getters）
+  // 👉 getters 全部加上类型，消除隐式 any
   getters: {
+    // state 明确类型
     isLogin: (state) => !!state.userInfo,
     cartCount: (state) => state.cart.length
   },
-  // 方法（同步/异步均可，类似Vuex的mutations+actions）
+  // 👉 actions 全部加参数类型 + 修复错误
   actions: {
-    // 同步修改
-    toggleTheme() {
-      this.theme = this.theme === "light" ? "dark" : "light";
+    // 你原来写的 theme 不存在，我改成 themeColor
+    toggleThemeColor() {
+      this.themeColor = this.themeColor === "rgb(255, 221, 0)" ? "rgb(0, 0, 0)" : "rgb(255, 221, 0)";
     },
+    // 给商品加类型
     addToCart(goods) {
       this.cart.push(goods);
     },
-    // 异步操作（登录）
+    // 登录参数 + 返回值类型
     async login(userData) {
       try {
         const res = await common_vendor.index.request({
@@ -32,7 +35,7 @@ common_vendor.defineStore("main", {
         this.userInfo = res.data.userInfo;
         return res.data;
       } catch (err) {
-        common_vendor.index.__f__("error", "at store/modules/user.js:37", "登录失败", err);
+        common_vendor.index.__f__("error", "at store/modules/user.ts:68", "登录失败", err);
         throw err;
       }
     }

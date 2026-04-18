@@ -9,7 +9,7 @@ const _easycom_u_icon = () => "../../node-modules/uview-plus/components/u-icon/u
 if (!Math) {
   _easycom_u_icon();
 }
-const _sfc_main = {
+const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "index",
   setup(__props) {
     const list = common_vendor.ref([
@@ -35,8 +35,7 @@ const _sfc_main = {
     return (_ctx, _cache) => {
       return {
         a: common_vendor.unref(common_assets.recommendIcon),
-        b: common_vendor.t(_ctx.imgUrl),
-        c: common_vendor.f(list.value, (item, k0, i0) => {
+        b: common_vendor.f(list.value, (item, k0, i0) => {
           return {
             a: common_vendor.t(item.title),
             b: "af138f8b-0-" + i0,
@@ -45,14 +44,14 @@ const _sfc_main = {
             e: item.id
           };
         }),
-        d: common_vendor.p({
+        c: common_vendor.p({
           name: "map",
           color: "#fff"
         })
       };
     };
   }
-};
+});
 const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-af138f8b"]]);
 wx.createComponent(Component);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/components/recommend/index.js.map

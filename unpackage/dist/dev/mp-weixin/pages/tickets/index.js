@@ -1,5 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+const api_core_ticket = require("../../api/core/ticket.js");
 if (!Array) {
   const _easycom_u_navbar2 = common_vendor.resolveComponent("u-navbar");
   const _easycom_u_icon2 = common_vendor.resolveComponent("u-icon");
@@ -19,97 +20,32 @@ if (!Math) {
   (_easycom_u_navbar + _easycom_u_icon + _easycom_u_tabs + ticketCard + _easycom_u_empty + _easycom_u_calendar + _easycom_u_modal)();
 }
 const ticketCard = () => "../../components/ticketCard/index.js";
-const _sfc_main = {
+const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "index",
   setup(__props) {
     const title = common_vendor.ref("购买车票");
     const dateList = common_vendor.ref([]);
     const active = common_vendor.ref(0);
     const calendarShow = common_vendor.ref(false);
-    const listData = common_vendor.ref([
-      // 有时间，大约到达时间，开始地点，结束地点，票价，剩余数量
-      {
-        id: 1,
-        time: "09:00",
-        arriveTime: "09:30",
-        start: "上海",
-        end: "苏州",
-        price: "100.00",
-        number: "10"
-      },
-      {
-        id: 2,
-        time: "09:00",
-        arriveTime: "09:30",
-        start: "上海",
-        end: "苏州",
-        price: "100.00",
-        number: "10"
-      },
-      {
-        id: 2,
-        time: "09:00",
-        arriveTime: "09:30",
-        start: "上海",
-        end: "苏州",
-        price: "100.00",
-        number: "10"
-      },
-      {
-        id: 2,
-        time: "09:00",
-        arriveTime: "09:30",
-        start: "上海",
-        end: "苏州",
-        price: "100.00",
-        number: "10"
-      },
-      {
-        id: 2,
-        time: "09:00",
-        arriveTime: "09:30",
-        start: "上海",
-        end: "苏州",
-        price: "100.00",
-        number: "10"
-      },
-      {
-        id: 2,
-        time: "09:00",
-        arriveTime: "09:30",
-        start: "上海",
-        end: "苏州",
-        price: "100.00",
-        number: "10"
-      },
-      {
-        id: 2,
-        time: "09:00",
-        arriveTime: "09:30",
-        start: "上海",
-        end: "苏州",
-        price: "100.00",
-        number: "10"
-      },
-      {
-        id: 2,
-        time: "09:00",
-        arriveTime: "09:30",
-        start: "上海",
-        end: "苏州",
-        price: "100.00",
-        number: "10"
-      }
-    ]);
+    const listData = common_vendor.ref([]);
     common_vendor.onMounted(() => {
       dateList.value = getDaysIn15Days(15);
-      common_vendor.index.__f__("log", "at pages/tickets/index.vue:119", dateList.value);
+      requestTicketList();
     });
+    const requestTicketList = async () => {
+      const { message, data, code } = await api_core_ticket.getTicketList({
+        startCity: "洪洞",
+        endCity: "小店",
+        departDate: "2026-4-19"
+      });
+      common_vendor.index.__f__("log", "at pages/tickets/index.vue:69", data);
+      listData.value = data;
+    };
     common_vendor.onLoad((options) => {
       console.group(options);
     });
     common_vendor.onReachBottom(() => {
-      common_vendor.index.__f__("log", "at pages/tickets/index.vue:126", "触底了");
+      common_vendor.index.__f__("log", "at pages/tickets/index.vue:77", "触底了");
     });
     const getDaysIn15Days = (num) => {
       const week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
@@ -125,16 +61,16 @@ const _sfc_main = {
       });
     };
     const handleTabChange = (e) => {
-      common_vendor.index.__f__("log", "at pages/tickets/index.vue:142", e);
+      common_vendor.index.__f__("log", "at pages/tickets/index.vue:93", e);
     };
     const handleCalendar = () => {
-      calendarShow.value = true;
+      requestTicketList();
     };
     const handleDateClose = () => {
       calendarShow.value = false;
     };
     const handleDateConfirm = (e) => {
-      common_vendor.index.__f__("log", "at pages/tickets/index.vue:151", e);
+      common_vendor.index.__f__("log", "at pages/tickets/index.vue:103", e);
       active.value = 8;
     };
     const tipShow = common_vendor.ref(false);
@@ -184,12 +120,12 @@ const _sfc_main = {
       }, listData.value.length > 0 ? {
         i: common_vendor.f(listData.value, (item, k0, i0) => {
           return {
-            a: common_vendor.o(handleUnit, item.id),
+            a: common_vendor.o(handleUnit, item.scheduleId),
             b: "aa2aed77-3-" + i0,
             c: common_vendor.p({
               data: item
             }),
-            d: item.id
+            d: item.scheduleId
           };
         })
       } : {
@@ -213,7 +149,7 @@ const _sfc_main = {
       });
     };
   }
-};
+});
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-aa2aed77"]]);
 wx.createPage(MiniProgramPage);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/tickets/index.js.map

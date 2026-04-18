@@ -1,19 +1,19 @@
 {
-  "hash": "144bc494",
-  "configHash": "e69026fd",
-  "lockfileHash": "4a9db83b",
-  "browserHash": "65eb47ed",
+  "hash": "e7188e39",
+  "configHash": "b5fae13f",
+  "lockfileHash": "505dd9aa",
+  "browserHash": "8dc9e569",
   "optimized": {
     "uview-plus": {
       "src": "../../../../../node_modules/uview-plus/index.js",
       "file": "uview-plus.js",
-      "fileHash": "5f2c05e2",
+      "fileHash": "611d0932",
       "needsInterop": false
     },
     "lunar-javascript": {
       "src": "../../../../../node_modules/lunar-javascript/index.js",
       "file": "lunar-javascript.js",
-      "fileHash": "56fce244",
+      "fileHash": "d080470c",
       "needsInterop": true
     }
   },

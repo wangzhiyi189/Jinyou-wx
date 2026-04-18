@@ -92,7 +92,8 @@
 .recommend .list .list-item .item-address.data-v-af138f8b {
   position: absolute;
   top: 70rpx;
-  left: 2r0px;
+  left: 20rpx;
+  /* 修复你写错的 2r0px => 20rpx */
   padding: 2px 10rpx;
   border-radius: 20rpx;
   z-index: 995;

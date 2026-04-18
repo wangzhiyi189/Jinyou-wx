@@ -1,7 +1,7 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
-const _sfc_main = {
+const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "index",
   setup(__props) {
     const orderList = common_vendor.reactive([
@@ -50,37 +50,38 @@ const _sfc_main = {
         img: common_assets.eticketIcon
       },
       {
-        id: 1,
+        id: 2,
+        // TS 改造备注：修复重复 id 为 2
         text: "常用旅客",
         img: common_assets.myticketIcon
       },
       {
-        id: 1,
+        id: 3,
         text: "我的发票",
         img: common_assets.invoiceIcon
       },
       {
-        id: 1,
+        id: 4,
         text: "帮助中心",
         img: common_assets.myhelpIcon
       },
       {
-        id: 1,
+        id: 5,
         text: "客服中心",
         img: common_assets.searchticketIcon
       },
       {
-        id: 1,
+        id: 6,
         text: "关于我们",
         img: common_assets.aboutusIcon
       },
       {
-        id: 1,
+        id: 7,
         text: "推广中心",
         img: common_assets.extensionimgIcon
       },
       {
-        id: 1,
+        id: 8,
         text: "口令兑换",
         img: common_assets.shopIcon
       }
@@ -112,7 +113,7 @@ const _sfc_main = {
       };
     };
   }
-};
+});
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-f97bc692"]]);
 wx.createPage(MiniProgramPage);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/my/index.js.map

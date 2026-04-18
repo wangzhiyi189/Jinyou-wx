@@ -25,13 +25,14 @@
 				<view class="selectmes-item" v-for="item in moreList" :key="item.id">
 					<image :src="item.img" class="item-icon" />
 					<view class="item-text">{{ item.text }}</view>
-
 				</view>
 			</view>
 		</view>
 	</view>
 </template>
-<script setup>
+
+<script setup lang="ts">
+// ===================== TS 改造备注：统一导入图片 =====================
 import myuserbackground from '@/static/images/my/myuserbackground.png'
 import allorderIcon from '@/static/images/my/icon_allorder.png'
 import waitpayIcon from '@/static/images/my/icon_waitpay.png'
@@ -45,89 +46,110 @@ import searchticketIcon from '@/static/images/my/search_ticket.png'
 import aboutusIcon from '@/static/images/my/about_us.png'
 import extensionimgIcon from '@/static/images/my/extensionimg.png'
 import shopIcon from '@/static/images/my/icon_shop.png'
-import { ref , reactive, onMounted } from 'vue'
-const orderList = reactive([
+
+import { ref, reactive, onMounted } from 'vue'
+
+// ===================== TS 改造备注：定义列表类型 =====================
+/** 订单列表项类型 */
+interface OrderItem {
+  id: number
+  text: string
+  img: string
+}
+
+/** VIP 信息项类型 */
+interface VipItem {
+  id: number
+  text: string
+  value: number
+}
+
+// ===================== TS 改造备注：给 reactive 加上类型约束 =====================
+const orderList = reactive<OrderItem[]>([
 	{
-		id:1,
-		text:'全部订单',
-		img:allorderIcon,
+		id: 1,
+		text: '全部订单',
+		img: allorderIcon,
 	},
 	{
-		id:2,
-		text:'待付款',
-		img:waitpayIcon,
+		id: 2,
+		text: '待付款',
+		img: waitpayIcon,
 	},
 	{
-		id:3,
-		text:'待出行',
-		img:waitgoIcon,
+		id: 3,
+		text: '待出行',
+		img: waitgoIcon,
 	},
 	{
-		id:4,
-		text:'待点评',
-		img:waitreviewIcon,
+		id: 4,
+		text: '待点评',
+		img: waitreviewIcon,
 	},
 ])
-const vipmesList = reactive([
+
+const vipmesList = reactive<VipItem[]>([
 	{
-		id:1,
-		text:'优惠券',
-		value:0,
+		id: 1,
+		text: '优惠券',
+		value: 0,
 	},
 	{
-		id:2,
-		text:'积分',
-		value:0,
+		id: 2,
+		text: '积分',
+		value: 0,
 	},
 	{
-		id:3,
-		text:'金币',
-		value:0,
+		id: 3,
+		text: '金币',
+		value: 0,
 	},
 ])
-const moreList = reactive([
+
+const moreList = reactive<OrderItem[]>([
 	{
-		id:1,
-		text:'电子客票',
-		img:eticketIcon,
+		id: 1,
+		text: '电子客票',
+		img: eticketIcon,
 	},
 	{
-		id:1,
-		text:'常用旅客',
-		img:myticketIcon,
+		id: 2, // TS 改造备注：修复重复 id 为 2
+		text: '常用旅客',
+		img: myticketIcon,
 	},
 	{
-		id:1,
-		text:'我的发票',
-		img:invoiceIcon,
+		id: 3,
+		text: '我的发票',
+		img: invoiceIcon,
 	},
 	{
-		id:1,
-		text:'帮助中心',
-		img:myhelpIcon,
+		id: 4,
+		text: '帮助中心',
+		img: myhelpIcon,
 	},
 	{
-		id:1,
-		text:'客服中心',
-		img:searchticketIcon,
+		id: 5,
+		text: '客服中心',
+		img: searchticketIcon,
 	},
 	{
-		id:1,
-		text:'关于我们',
-		img:aboutusIcon,
+		id: 6,
+		text: '关于我们',
+		img: aboutusIcon,
 	},
 	{
-		id:1,
-		text:'推广中心',
-		img:extensionimgIcon,
+		id: 7,
+		text: '推广中心',
+		img: extensionimgIcon,
 	},
 	{
-		id:1,
-		text:'口令兑换',
-		img:shopIcon,
+		id: 8,
+		text: '口令兑换',
+		img: shopIcon,
 	},
 ])
 </script>
+
 <style lang="scss" scoped>
 .my{
 	background-color: rgb(241, 245, 246);
@@ -153,18 +175,18 @@ const moreList = reactive([
 				color: #fff;
 			}
 		}
-
 	}
 	.main{
 		position: relative;
 		padding:0 $w-padding-big;
 		margin-top:-30px;
-		@include flex-column-style($gap:$w-gap-lg);
+		display: flex;
+		flex-direction: column;
+		gap:$w-gap-lg;
 		
 		.selectmes , .ordermes{ 
 			padding:$w-padding-base;
 			background-color:$w-card-color;
-			// box-shadow: $w-shadow;
 			box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 			border-radius: 5px;
 		}
@@ -173,11 +195,15 @@ const moreList = reactive([
 				border-bottom:1px solid $w-border-color;
 			}
 			.orderall , .vipmes{
-				@include flex-content-style($gap:$w-gap-base);
+				display: flex;
+				justify-content: space-around;
+				gap:$w-gap-base;
 				padding:$w-padding-base 0;
 				.order-item{
 					width:100%;
-					@include flex-column-style($gap:$w-gap-base);
+					display: flex;
+					flex-direction: column;
+					gap:$w-gap-base;
 					align-items: center;
 					.item-icon{
 						width: 24px;
@@ -196,15 +222,16 @@ const moreList = reactive([
 		}
 		.selectmes{
 			display: flex;
-    	flex-wrap: wrap; /* 自动换行 关键！ */
-    	// gap: 20rpx; /* 两个格子之间的间距 */
+    	flex-wrap: wrap;
 			padding:0;
     	.selectmes-item{
     	  position: relative;
-    	  width: 25%; /* 减一点间距，避免挤不下 */
+    	  width: 25%;
 				font-size:$w-size-base;
 				color:$w-font-color-deep;
-				@include flex-column-style($gap:$w-gap-sm);
+				display: flex;
+				flex-direction: column;
+				gap:$w-gap-sm;
 				align-items: center;
 				border-right:1px solid $w-border-color;
 				border-bottom:1px solid $w-border-color;

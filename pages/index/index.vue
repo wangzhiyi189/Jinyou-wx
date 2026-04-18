@@ -14,11 +14,7 @@
 			</div>
 		</view>
 		<view class="home-swiper">
-			<swiper autoplay  :interval="5000" :circular="true"  >
-				<swiper-item v-for="item in swiperList" :key="item.id">
-					<image :src="item.img" mode="aspectFill" ></image>
-				</swiper-item>
-			</swiper>
+			<TopBannerModel />
 		</view>
 		<view class="home-content">
 			<view class="content-card">
@@ -50,11 +46,7 @@
 				</view>
 			</view>
 			<view class="content-carousel">
-				<swiper autoplay :interval="3000" :circular="true" :indicator-dots="true"  >
-					<swiper-item v-for="item in carouselList" :key="item.id">
-						<image :src="item.img" mode="aspectFill" ></image>
-					</swiper-item>
-				</swiper>
+				<BannerModel />
 			</view>
 			<Recommend />
 		</view>
@@ -63,122 +55,128 @@
 	</view>
 </template>
 
-<script setup>
-	import { Lunar } from 'lunar-javascript';
-	import { onPageScroll , onShow  } from '@dcloudio/uni-app'
+<script setup lang="ts">
+	// ===================== TS 改造备注：修复 lunar 导入报错（uniapp 兼容写法） =====================
+	import * as LunarJS from 'lunar-javascript';
+	const { Lunar } = LunarJS;
+
+	import { onPageScroll, onShow } from '@dcloudio/uni-app'
+	// declare function onPageScroll(callback: (e: { scrollTop: number }) => void): void;
 	import Recommend from '@/components/recommend/index.vue'
-	import { ref , reactive, onMounted , onUnmounted } from 'vue'
+	import { ref, reactive, onMounted, onUnmounted } from 'vue'
 	import { useLocationStore } from '@/store'
+	import TopBannerModel from './topBanner.vue';
+	import BannerModel from './banner.vue'
 	const locationStore = useLocationStore()
-	const swiperList = ref([
-		{
-			id: 1,
-			img: 'https://ns-strategy.cdn.bcebos.com/ns-strategy/upload/fc_big_pic/part-00626-663.jpg'
-		},
-		{
-			id: 2,
-			img: 'https://img2.baidu.com/it/u=4070310662,2064405952&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=667'
-		},
-	])
-	const carouselList = ref([
-		{
-			id: 1,
-			img: 'https://www.bus365.com/files/group1/M00/00/3D/CgoB7Vv9OCuAHDpWAAKqF2m8Nno599.png'
-		},
-		{
-			id: 2,
-			img: 'https://img2.baidu.com/it/u=4070310662,2064405952&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=667'
-		},
-	])
-	const btnTop = ref(20);    // 按钮距离顶部距离
-	const btnRight = ref(0);     // 按钮距离右侧距离
-	const btnHeight = ref(50);
-	const calendarShow = ref(false)
-	const opacity = ref(0)
-	
-	const formData = reactive({
+
+
+	// ===================== TS 改造备注：明确变量类型 =====================
+	const btnTop = ref<number>(20);
+	const btnRight = ref<number>(0);
+	const btnHeight = ref<number>(50);
+	const calendarShow = ref<boolean>(false);
+	const opacity = ref<number>(0);
+
+	// ===================== TS 改造备注：给表单定义严格类型 =====================
+	interface FormData {
+		start_address: string;
+		end_address: string;
+		date: string;
+		lunarDate: string;
+	}
+	const formData = reactive<FormData>({
 		start_address: '',
 		end_address: '',
-		date:'',
-		lunarDate:'',
+		date: '',
+		lunarDate: '',
 	})
-	onMounted(() => { 
+
+	// ===================== TS 改造备注：给全局事件定义参数类型 =====================
+	interface UpdateDataEvent {
+		value: {
+			type: 'start' | 'end';
+			city: string;
+		};
+	}
+
+	onMounted(() => {
 		getDate();
-		uni.$on('updateData', (data) => {
-    	const info = data.value;
-			if(!info)return 
-			if(info.type == 'start'){
-				formData.start_address = info.city
-			}else{
-				formData.end_address = info.city
+		uni.$on('updateData', (data: UpdateDataEvent) => {
+			const info = data.value;
+			if (!info) return;
+			if (info.type === 'start') {
+				formData.start_address = info.city;
+			} else {
+				formData.end_address = info.city;
 			}
-  	});
-		// getLocation();
-		if(uni.getMenuButtonBoundingClientRect()){
+		});
+
+		// 获取胶囊按钮位置（安全区适配）
+		const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+		if (menuButtonInfo) {
 			const systemInfo = uni.getSystemInfoSync();
-			const menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			btnTop.value = menuButtonInfo.top;
 			btnRight.value = systemInfo.screenWidth - menuButtonInfo.right;
 			btnHeight.value = menuButtonInfo.height;
 		}
-		
 	})
-	onUnmounted (() => {
-  	uni.$off('updateData'); // 移除监听
-		console.log('页面卸载，事件监听已移除')
+
+	onUnmounted(() => {
+		uni.$off('updateData');
 	})
-	onPageScroll((e) => {
-  	const scrollTop = e.scrollTop
-  	const max = 80
-  	let op = scrollTop / max
-  	if (op > 1) op = 1
-  	opacity.value = op
+
+	// ===================== TS 改造备注：滚动事件已加类型，无报错 =====================
+	onPageScroll((e: { scrollTop: number }) => {
+		const scrollTop = e.scrollTop;
+		const max = 80;
+		let op = scrollTop / max;
+		if (op > 1) op = 1;
+		opacity.value = op;
 	})
-	// onShow(() => {
-  // 	console.log(getCurrentPages().at(-1).selectInfo)
-	// 	const info = getCurrentPages().at(-1).selectInfo;
-	// 	if(!info)return 
-	// 	if(info.type == 'start'){
-	// 		formData.start_address = info.city
-	// 	}else{
-	// 		formData.end_address = info.city
-	// 	}
-	// })
-	const handleLocation = async() => {
+
+	// ===================== TS 改造备注：异步函数添加返回值类型 =====================
+	const handleLocation = async (): Promise<void> => {
 		await locationStore.getCurrentAddress();
-		console.log(locationStore)
+		console.log(locationStore);
 	}
 
-	const getDate = (now = new Date()) => {
-	  // 公历
-	  const month = String(now.getMonth() + 1).padStart(2, '0');
-	  const day = String(now.getDate()).padStart(2, '0');
-	  formData.date = `${month}月${day}日`;
-	  // 农历
-	  const lunar = Lunar.fromDate(now);
-	  formData.lunarDate = `${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
+	// ===================== TS 改造备注：日期函数参数添加类型 =====================
+	const getDate = (now: Date = new Date()): void => {
+		const month = String(now.getMonth() + 1).padStart(2, '0');
+		const day = String(now.getDate()).padStart(2, '0');
+		formData.date = `${month}月${day}日`;
+		const lunar = Lunar.fromDate(now);
+		formData.lunarDate = `${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
 	}
-	const handleSwitch = () => {
+	
+	const handleSwitch = (): void => {
 		[formData.start_address, formData.end_address] = [formData.end_address, formData.start_address];
 	}
-	const handleDatePicker = () => {
+
+	const handleDatePicker = (): void => {
 		calendarShow.value = true;
 	}
-	const handleDateClose = () => {
+
+	const handleDateClose = (): void => {
 		calendarShow.value = false;
 	}
-	const handleDateConfirm = (date) => {
+
+	// ===================== TS 改造备注：日历返回值类型 =====================
+	const handleDateConfirm = (date: number | Date): void => {
 		const newDate = new Date(date);
 		getDate(newDate);
 		handleDateClose();
 	}
-	const handleSelectCity = (e) => {
-	  uni.navigateTo({url: `/pages/selectCity/index?type=${e}`})
+
+	// ===================== TS 改造备注：参数只能是 start / end，更安全 =====================
+	const handleSelectCity = (e: 'start' | 'end'): void => {
+		uni.navigateTo({ url: `/pages/selectCity/index?type=${e}` });
 	}
-	// 开始买票
-	const handleTickets = () => {
+
+	// 开始搜索车票
+	const handleTickets = (): void => {
 		console.log(formData);
-		uni.navigateTo({url: `/pages/tickets/index`})
+		uni.navigateTo({ url: `/pages/tickets/index` });
 	}
 </script>
 
@@ -235,7 +233,9 @@
 			z-index: 998;
 			margin-top:-200rpx;
 			padding:$w-padding-lg;
-			@include flex-column-style($gap:$w-gap-lg);
+			display: flex;
+			flex-direction: column;
+			gap:$w-gap-lg;
 			.content-card{
 				height:auto;
 				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);

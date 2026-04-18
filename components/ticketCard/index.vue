@@ -1,26 +1,26 @@
 <template>
   <div class="ticket-card" @click="handleDetail">
       <div class="time-row">
-        <div class="start-time">{{ data.time }}</div>
+        <div class="start-time">{{ dateFormat(data?.departTime) }}</div>
         <div class="arrive-time" @click.stop>
-          预计{{data?.arriveTime}}到达
+          预计{{dateFormat(data?.arriveTime)}}到达
           <u-icon name="info-circle" @click="handleUnit"></u-icon>
         </div>
       </div>
       <div class="station-row">
-        {{data?.end}} <span>→</span> {{data.start}}
+        {{cityJson(data?.startCity)}} <span>→</span> {{cityJson(data?.endCity)}}
       </div>
       <div class="info-row">
         <div class="price">
           <span class="unit">¥</span>
-          <span class="value">{{ data.price }}</span>
+          <span class="value">{{ data?.price }}</span>
         </div>
-        <div class="stock stock-normal">余票：{{ data.number }}张</div>
+        <div class="stock stock-normal">余票：{{ data?.seatRemaining }}张</div>
       </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref,defineEmits } from 'vue'
 // 获取父组件传过来的数据
 const props = defineProps({
@@ -31,10 +31,22 @@ const emit = defineEmits(['unit'])
 onMounted(()=>{
   
 }) 
-const handleDetail = (e) => {
-  uni.navigateTo({url: `/pages/order/index?type=${e}`})
+const handleDetail = () : void => {
+  const id = props.data?.scheduleId
+  uni.navigateTo({url: `/pages/order/index?type=${id}`})
 }
-const handleUnit = () => {
+const cityJson = (e : string) : string => {
+  let cityArray = JSON.parse(e);
+  return cityArray[cityArray.length - 1]
+}
+const dateFormat = (e: string) : string => {
+  const date = new Date(e);
+  const hour = date.getHours().toString().padStart(2, '0');
+  const minute = date.getMinutes().toString().padStart(2, '0');
+  const result = `${hour}:${minute}`;
+  return result
+}
+const handleUnit = () : void => {
   emit('unit')
 }
 </script>

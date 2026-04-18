@@ -2,9 +2,9 @@ import {
   __commonJS
 } from "./chunk-Y2F7D3TJ.js";
 
-// ../../../../../code/时分区区通/node_modules/lunar-javascript/lunar.js
+// ../../../../../code/Jinyou-Web/node_modules/lunar-javascript/lunar.js
 var require_lunar = __commonJS({
-  "../../../../../code/时分区区通/node_modules/lunar-javascript/lunar.js"(exports, module) {
+  "../../../../../code/Jinyou-Web/node_modules/lunar-javascript/lunar.js"(exports, module) {
     (function(root, factory) {
       if (typeof define === "function" && define.amd) {
         define(factory);
@@ -11706,9 +11706,9 @@ var require_lunar = __commonJS({
   }
 });
 
-// ../../../../../code/时分区区通/node_modules/lunar-javascript/index.js
+// ../../../../../code/Jinyou-Web/node_modules/lunar-javascript/index.js
 var require_lunar_javascript = __commonJS({
-  "../../../../../code/时分区区通/node_modules/lunar-javascript/index.js"(exports, module) {
+  "../../../../../code/Jinyou-Web/node_modules/lunar-javascript/index.js"(exports, module) {
     var { Solar, Lunar, Foto, Tao, NineStar, EightChar, SolarWeek, SolarMonth, SolarSeason, SolarHalfYear, SolarYear, LunarMonth, LunarYear, LunarTime, ShouXingUtil, SolarUtil, LunarUtil, FotoUtil, TaoUtil, HolidayUtil, NineStarUtil, I18n } = require_lunar();
     module.exports = {
       Solar,

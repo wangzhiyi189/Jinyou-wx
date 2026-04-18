@@ -1,8 +1,10 @@
 {
   "devDependencies": {
+    "@dcloudio/types": "^3.4.30",
     "postcss-px-to-viewport": "^1.1.0",
     "sass": "^1.92.1",
     "sass-loader": "^16.0.5",
+    "typescript": "^6.0.3",
     "unplugin-auto-import": "^20.1.0"
   },
   "dependencies": {

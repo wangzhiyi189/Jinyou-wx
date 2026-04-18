@@ -36,7 +36,7 @@
   </view>
 </template>
 
-<script>
+<script >
 export default {
   data() {
     return {

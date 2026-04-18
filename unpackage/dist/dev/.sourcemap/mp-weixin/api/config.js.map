@@ -1,0 +1,1 @@
+{"version":3,"file":"config.js","sources":["api/config.ts"],"sourcesContent":["export default {\r\n  baseUrl: 'http://localhost:8081/app', // 你的接口地址\r\n  timeout: 10000\r\n}"],"names":[],"mappings":";AAAA,MAAe,SAAA;AAAA,EACb,SAAS;AAAA;AAAA,EACT,SAAS;AACX;;"}

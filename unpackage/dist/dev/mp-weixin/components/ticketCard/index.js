@@ -8,42 +8,56 @@ const _easycom_u_icon = () => "../../node-modules/uview-plus/components/u-icon/u
 if (!Math) {
   _easycom_u_icon();
 }
-const _sfc_main = {
+const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "index",
   props: {
     data: Object
   },
   emits: ["unit"],
   setup(__props, { emit: __emit }) {
+    const props = __props;
     const emit = __emit;
     common_vendor.onMounted(() => {
     });
-    const handleDetail = (e) => {
-      common_vendor.index.navigateTo({ url: `/pages/order/index?type=${e}` });
+    const handleDetail = () => {
+      var _a;
+      const id = (_a = props.data) == null ? void 0 : _a.scheduleId;
+      common_vendor.index.navigateTo({ url: `/pages/order/index?type=${id}` });
+    };
+    const cityJson = (e) => {
+      let cityArray = JSON.parse(e);
+      return cityArray[cityArray.length - 1];
+    };
+    const dateFormat = (e) => {
+      const date = new Date(e);
+      const hour = date.getHours().toString().padStart(2, "0");
+      const minute = date.getMinutes().toString().padStart(2, "0");
+      const result = `${hour}:${minute}`;
+      return result;
     };
     const handleUnit = () => {
       emit("unit");
     };
     return (_ctx, _cache) => {
-      var _a, _b;
+      var _a, _b, _c, _d, _e, _f;
       return {
-        a: common_vendor.t(__props.data.time),
-        b: common_vendor.t((_a = __props.data) == null ? void 0 : _a.arriveTime),
+        a: common_vendor.t(dateFormat((_a = __props.data) == null ? void 0 : _a.departTime)),
+        b: common_vendor.t(dateFormat((_b = __props.data) == null ? void 0 : _b.arriveTime)),
         c: common_vendor.o(handleUnit),
         d: common_vendor.p({
           name: "info-circle"
         }),
         e: common_vendor.o(() => {
         }),
-        f: common_vendor.t((_b = __props.data) == null ? void 0 : _b.end),
-        g: common_vendor.t(__props.data.start),
-        h: common_vendor.t(__props.data.price),
-        i: common_vendor.t(__props.data.number),
+        f: common_vendor.t(cityJson((_c = __props.data) == null ? void 0 : _c.startCity)),
+        g: common_vendor.t(cityJson((_d = __props.data) == null ? void 0 : _d.endCity)),
+        h: common_vendor.t((_e = __props.data) == null ? void 0 : _e.price),
+        i: common_vendor.t((_f = __props.data) == null ? void 0 : _f.seatRemaining),
         j: common_vendor.o(handleDetail)
       };
     };
   }
-};
+});
 const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-9828ffe1"]]);
 wx.createComponent(Component);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/components/ticketCard/index.js.map

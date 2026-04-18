@@ -17,7 +17,7 @@
     </u-tabs>
 		<view class="tickets-main">
 			<view class="main-list" v-if="listData.length > 0">
-				<view class="list-item" v-for="item in listData" :key="item.id">
+				<view class="list-item" v-for="item in listData" :key="item.scheduleId">
 					<ticketCard :data="item" @unit="handleUnit" />
 				</view>
 				
@@ -31,93 +31,44 @@
 	</view>
 </template>
 
-<script setup>
+<script setup lang="ts">
 	import {onMounted, ref} from 'vue';
 	import { onLoad , onReachBottom } from '@dcloudio/uni-app';
+	import { getTicketList } from '@/api'
 	import ticketCard from '@/components/ticketCard/index.vue'
+	interface DateData{
+		date:string,
+		week:string
+	}
+	interface TicketListData {
+		scheduleId: number; // 班次id
+		arriveTime: string; // 到达时间
+		departTime: string; // 出发时间
+		duration:number, // 耗时
+		startCity: string; // 出发城市
+		endCity: string; // 到达城市
+		lineId: number; // 线路id
+		price: number; // 价格
+		seatRemaining: number; // 剩余座位数
+	}
 	const title = ref('购买车票')
-	const dateList = ref([])
+	const dateList = ref<DateData[]>([])
 	const active = ref(0)
 	const calendarShow = ref(false)
-	const listData = ref([
-		// 有时间，大约到达时间，开始地点，结束地点，票价，剩余数量
-		{
-			id:1,
-			time: '09:00',
-			arriveTime: '09:30',
-			start: '上海',
-			end: '苏州',
-			price: '100.00',
-			number: '10'
-		},
-		{
-			id:2,
-			time: '09:00',
-			arriveTime: '09:30',
-			start: '上海',
-			end: '苏州',
-			price: '100.00',
-			number: '10'
-		},
-		{
-			id:2,
-			time: '09:00',
-			arriveTime: '09:30',
-			start: '上海',
-			end: '苏州',
-			price: '100.00',
-			number: '10'
-		},
-		{
-			id:2,
-			time: '09:00',
-			arriveTime: '09:30',
-			start: '上海',
-			end: '苏州',
-			price: '100.00',
-			number: '10'
-		},
-		{
-			id:2,
-			time: '09:00',
-			arriveTime: '09:30',
-			start: '上海',
-			end: '苏州',
-			price: '100.00',
-			number: '10'
-		},
-		{
-			id:2,
-			time: '09:00',
-			arriveTime: '09:30',
-			start: '上海',
-			end: '苏州',
-			price: '100.00',
-			number: '10'
-		},
-		{
-			id:2,
-			time: '09:00',
-			arriveTime: '09:30',
-			start: '上海',
-			end: '苏州',
-			price: '100.00',
-			number: '10'
-		},
-		{
-			id:2,
-			time: '09:00',
-			arriveTime: '09:30',
-			start: '上海',
-			end: '苏州',
-			price: '100.00',
-			number: '10'
-		}
-	])
+	const listData = ref<TicketListData[]>([])
 	onMounted(()=>{
 		dateList.value = getDaysIn15Days(15);
-		console.log(dateList.value)
+		requestTicketList();
 	})
+	const requestTicketList = async () => {
+		const {message,data,code} = await getTicketList({
+			startCity:'洪洞',
+			endCity:'小店',
+			departDate:'2026-4-19'
+		});
+		console.log(data)
+		listData.value = data;
+	}
 	onLoad(options => {
     console.group(options)
   })
@@ -125,7 +76,7 @@
   onReachBottom(()=>{
 		console.log('触底了')
 	}) 
-	const getDaysIn15Days = (num) => {
+	const getDaysIn15Days = (num:number) : Array<DateData> => {
 		const week = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
   	const today = new Date()
   	return Array.from({ length: num }, (_, i) => {
@@ -138,23 +89,24 @@
   	  }
   	})
 	}
-	const handleTabChange = (e) => {
+	const handleTabChange = (e : any) : void => {
 		console.log(e)
 	}
-	const handleCalendar = () => {
-		calendarShow.value = true
+	const handleCalendar = () : void => {
+		// calendarShow.value = true
+		requestTicketList();
 	}
-	const handleDateClose = () => {
+	const handleDateClose = () : void => {
 		calendarShow.value = false
 	}
-	const handleDateConfirm = (e) => {
+	const handleDateConfirm = (e : any) : void => {
 		console.log(e)
 		active.value = 8;
 	}
-	const tipShow = ref(false);
-	const TipTitle = ref('温馨提示');
-	const TipContent = ref('耗时仅供参考，实际时间可能会有所不同，请合理安排出行时间。');
-	const handleUnit = () => {
+	const tipShow = ref<boolean>(false);
+	const TipTitle = ref<string>('温馨提示');
+	const TipContent = ref<string>('耗时仅供参考，实际时间可能会有所不同，请合理安排出行时间。');
+	const handleUnit = () : void => {
 		tipShow.value = true;
 	}
 </script>
