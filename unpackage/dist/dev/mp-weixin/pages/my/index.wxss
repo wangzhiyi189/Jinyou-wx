@@ -26,7 +26,8 @@
 }
 .u-button--primary.data-v-f97bc692 {
   background: linear-gradient(45deg, #febc22, #fa8208);
-  border: 0;
+  border: 0 !important;
+  background-color: transparent;
 }
 .u-button--primary .u-button__text.data-v-f97bc692 {
   font-size: 36rpx !important;
@@ -41,6 +42,10 @@
 }
 .u-navbar .u-status-bar .u-navbar__content__title.data-v-f97bc692, .u-navbar .u-navbar__content .u-navbar__content__title.data-v-f97bc692 {
   color: #fff;
+}
+.u-checkbox__label-wrap.data-v-f97bc692 {
+  width: 100%;
+  margin-right: 20rpx;
 }
 
 /* 行为相关颜色 */
@@ -65,7 +70,7 @@
 }
 .my .my-head.data-v-f97bc692 {
   position: relative;
-  height: 170px;
+  height: 340rpx;
 }
 .my .my-head .img_usermesbg.data-v-f97bc692 {
   width: 100%;
@@ -85,10 +90,39 @@
   font-size: 16px;
   color: #fff;
 }
+.my .my-head .my-info.data-v-f97bc692 {
+  position: absolute;
+  top: 45%;
+  padding: 0 40rpx;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+.my .my-head .my-info .avatar.data-v-f97bc692 {
+  width: 100rpx;
+  height: 100rpx;
+}
+.my .my-head .my-info .avatar.data-v-f97bc692 .u-avatar {
+  width: 100% !important;
+  height: 100% !important;
+}
+.my .my-head .my-info .avatar.data-v-f97bc692 .u-avatar .u-avatar__image {
+  width: 100% !important;
+  height: 100% !important;
+}
+.my .my-head .my-info .info-detail.data-v-f97bc692 {
+  color: #fff;
+  font-size: 28rpx;
+}
+.my .my-head .my-info .info-detail .phone.data-v-f97bc692 {
+  font-size: 24rpx;
+}
 .my .main.data-v-f97bc692 {
   position: relative;
   padding: 0 40rpx;
-  margin-top: -30px;
+  margin-top: -60rpx;
   display: flex;
   flex-direction: column;
   gap: 30rpx;

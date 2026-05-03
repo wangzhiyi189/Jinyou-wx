@@ -2,14 +2,28 @@
 	<view class="my">
 		<view class="my-head">
 			<image :src="myuserbackground" class="img_usermesbg" />
-			<view class="my-login">
-				<view class="login-text">登录</view>
+			<view class="my-info" v-if="info?.openid">
+				<view class="avatar">
+					<u-avatar :src="info.avatar"></u-avatar>
+				</view>
+				<view class="info-detail">
+						<view class="tex">
+							尊敬的会员
+						</view>
+						<view class="phone">
+							{{ info.phone }}
+						</view>
+					</view>
 			</view>
+			<view class="my-login" v-else>
+				<view class="login-text" @click="handleLogin">登录</view>
+			</view>
+			
 		</view>
 		<view class="main">
 			<view class="ordermes">
 				<view class="orderall">
-					<view class="order-item" v-for="item in orderList" :key="item.id">
+					<view class="order-item" v-for="item in orderStatus" :key="item.id" @click="handleOrderList(item.value)">
 						<image :src="item.img" class="item-icon" />
 						<view class="item-text">{{ item.text }}</view>
 					</view>
@@ -22,7 +36,7 @@
 				</view>
 			</view>
 			<view class="selectmes">
-				<view class="selectmes-item" v-for="item in moreList" :key="item.id">
+				<view class="selectmes-item" v-for="item in moreList" :key="item.id" @click="handleReture(item.url)">
 					<image :src="item.img" class="item-icon" />
 					<view class="item-text">{{ item.text }}</view>
 				</view>
@@ -34,10 +48,7 @@
 <script setup lang="ts">
 // ===================== TS 改造备注：统一导入图片 =====================
 import myuserbackground from '@/static/images/my/myuserbackground.png'
-import allorderIcon from '@/static/images/my/icon_allorder.png'
-import waitpayIcon from '@/static/images/my/icon_waitpay.png'
-import waitgoIcon from '@/static/images/my/icon_waitgo.png'
-import waitreviewIcon from '@/static/images/my/icon_waitreview.png'
+
 import eticketIcon from '@/static/images/my/eticket_logo.png'
 import myticketIcon from '@/static/images/my/myticket.png'
 import invoiceIcon from '@/static/images/my/invoice.png'
@@ -47,46 +58,23 @@ import aboutusIcon from '@/static/images/my/about_us.png'
 import extensionimgIcon from '@/static/images/my/extensionimg.png'
 import shopIcon from '@/static/images/my/icon_shop.png'
 
-import { ref, reactive, onMounted } from 'vue'
-
-// ===================== TS 改造备注：定义列表类型 =====================
-/** 订单列表项类型 */
-interface OrderItem {
+import { ref, reactive, onMounted , watch } from 'vue'
+import { useUserStore } from '@/store'
+import { orderStatus } from '@/utils/my'
+import { getToken } from '@/utils/auth.ts'
+const userStore = useUserStore()
+interface moreItem {
   id: number
   text: string
-  img: string
+  img: string,
+	url:string,
 }
-
 /** VIP 信息项类型 */
 interface VipItem {
   id: number
   text: string
   value: number
 }
-
-// ===================== TS 改造备注：给 reactive 加上类型约束 =====================
-const orderList = reactive<OrderItem[]>([
-	{
-		id: 1,
-		text: '全部订单',
-		img: allorderIcon,
-	},
-	{
-		id: 2,
-		text: '待付款',
-		img: waitpayIcon,
-	},
-	{
-		id: 3,
-		text: '待出行',
-		img: waitgoIcon,
-	},
-	{
-		id: 4,
-		text: '待点评',
-		img: waitreviewIcon,
-	},
-])
 
 const vipmesList = reactive<VipItem[]>([
 	{
@@ -106,48 +94,89 @@ const vipmesList = reactive<VipItem[]>([
 	},
 ])
 
-const moreList = reactive<OrderItem[]>([
+const moreList = reactive<moreItem[]>([
 	{
 		id: 1,
 		text: '电子客票',
 		img: eticketIcon,
+		url:'',
 	},
 	{
 		id: 2, // TS 改造备注：修复重复 id 为 2
 		text: '常用旅客',
 		img: myticketIcon,
+		url:'/pages/my/passenger/index',
 	},
 	{
 		id: 3,
 		text: '我的发票',
 		img: invoiceIcon,
+		url:'',
 	},
 	{
 		id: 4,
 		text: '帮助中心',
 		img: myhelpIcon,
+		url:'',
 	},
 	{
 		id: 5,
 		text: '客服中心',
 		img: searchticketIcon,
+		url:'',
 	},
 	{
 		id: 6,
 		text: '关于我们',
 		img: aboutusIcon,
+		url:'',
 	},
 	{
 		id: 7,
 		text: '推广中心',
 		img: extensionimgIcon,
+		url:'',
 	},
 	{
 		id: 8,
 		text: '口令兑换',
 		img: shopIcon,
+		url:'',
 	},
 ])
+
+const info = ref<any>({})
+watch(userStore.userInfo, (newVal : any) => {
+	info.value = newVal
+},{immediate: true,deep: true})
+onMounted(() => {
+	// 获取用户信息
+	console.log(userStore.userInfo)
+	if(getToken()){
+		userStore.info();
+	}
+	
+})
+// 登录
+const handleLogin = () : void => {
+	uni.navigateTo({
+		url: '/pages/login/index',
+	})
+}
+const handleOrderList = (value : number) : void => {
+	uni.navigateTo({
+		url: `/pages/order/list/index?value=${value}`,
+	})
+}
+const handleReture = (url : string) => {
+	if(!url) return uni.showToast({
+		title:'敬请期待',
+		icon:'none'
+	})
+	uni.navigateTo({
+		url
+	})
+}
 </script>
 
 <style lang="scss" scoped>
@@ -156,7 +185,7 @@ const moreList = reactive<OrderItem[]>([
 	min-height:100vh;
 	.my-head{
 		position: relative;
-		height:170px;
+		height:340rpx;
 		.img_usermesbg{
 			width: 100%;
 			height:100%;
@@ -175,11 +204,38 @@ const moreList = reactive<OrderItem[]>([
 				color: #fff;
 			}
 		}
+		.my-info{
+			position:absolute;
+			top:45%;
+			padding:0 $w-padding-big;
+			width:100%;
+			box-sizing: border-box;
+			@include flex-center-style($gap:$w-gap-base);
+			.avatar{
+				width: 100rpx;
+				height: 100rpx;
+				:deep(.u-avatar){
+					width:100%!important;
+					height:100%!important;
+					.u-avatar__image{
+						width:100%!important;
+						height:100%!important;
+					}
+				}
+			}
+			.info-detail{
+				color:$w-font-color-white;
+				font-size:$w-size-base;
+				.phone{
+					font-size:$w-size-sm;
+				}
+			}
+		}
 	}
 	.main{
 		position: relative;
 		padding:0 $w-padding-big;
-		margin-top:-30px;
+		margin-top:-60rpx;
 		display: flex;
 		flex-direction: column;
 		gap:$w-gap-lg;

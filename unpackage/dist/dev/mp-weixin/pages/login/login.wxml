@@ -1,1 +1,0 @@
-<view><u-navbar wx:if="{{a}}" u-i="6c289bb7-0" bind:__l="__l" u-p="{{a}}"></u-navbar></view>

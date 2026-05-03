@@ -6,20 +6,29 @@ if (!Math) {
   "./pages/index/index.js";
   "./pages/animation/animation.js";
   "./pages/my/index.js";
+  "./pages/my/passenger/index.js";
+  "./pages/my/passenger/add/index.js";
   "./pages/selectCity/index.js";
   "./pages/tickets/index.js";
-  "./pages/order/index.js";
-  "./pages/login/login.js";
+  "./pages/order/index/index.js";
+  "./pages/order/payment/index.js";
+  "./pages/order/list/index.js";
+  "./pages/order/detail/index.js";
+  "./pages/login/index.js";
 }
 const _sfc_main = {
+  globalData: {
+    needRefreshTicketList: false
+    // 默认不需要刷新
+  },
   onLaunch: function() {
-    common_vendor.index.__f__("log", "at App.vue:4", "App Launch");
+    common_vendor.index.__f__("log", "at App.vue:7", "App Launch");
   },
   onShow: function() {
-    common_vendor.index.__f__("log", "at App.vue:7", "App Show");
+    common_vendor.index.__f__("log", "at App.vue:10", "App Show");
   },
   onHide: function() {
-    common_vendor.index.__f__("log", "at App.vue:10", "App Hide");
+    common_vendor.index.__f__("log", "at App.vue:13", "App Hide");
   }
 };
 function createApp() {

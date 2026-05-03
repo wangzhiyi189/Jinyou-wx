@@ -26,7 +26,8 @@
 }
 .u-button--primary.data-v-4d01889e {
   background: linear-gradient(45deg, #febc22, #fa8208);
-  border: 0;
+  border: 0 !important;
+  background-color: transparent;
 }
 .u-button--primary .u-button__text.data-v-4d01889e {
   font-size: 36rpx !important;
@@ -41,6 +42,10 @@
 }
 .u-navbar .u-status-bar .u-navbar__content__title.data-v-4d01889e, .u-navbar .u-navbar__content .u-navbar__content__title.data-v-4d01889e {
   color: #fff;
+}
+.u-checkbox__label-wrap.data-v-4d01889e {
+  width: 100%;
+  margin-right: 20rpx;
 }
 
 /* 行为相关颜色 */

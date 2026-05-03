@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "u-navbar": "../../../node-modules/uview-plus/components/u-navbar/u-navbar",
+    "u-count-down": "../../../node-modules/uview-plus/components/u-count-down/u-count-down",
+    "u-radio": "../../../node-modules/uview-plus/components/u-radio/u-radio",
+    "u-radio-group": "../../../node-modules/uview-plus/components/u-radio-group/u-radio-group",
+    "u-button": "../../../node-modules/uview-plus/components/u-button/u-button"
+  }
+}

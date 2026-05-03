@@ -1,7 +1,6 @@
 import config from './config'
-import { getToken, removeToken } from '@/utils/auth'
+import { getToken, removeToken, setToken } from '@/utils/auth'
 
-// -------------- TS 类型定义 --------------
 type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 interface RequestOptions {
@@ -23,82 +22,108 @@ interface AnyObject {
   [key: string]: any
 }
 
-// -------------- 核心请求 --------------
+let redirectUrl = ''
+export const setRedirectUrl = (url: string) => { redirectUrl = url }
+export const getRedirectUrl = () => redirectUrl
+export const clearRedirectUrl = () => { redirectUrl = '' }
+
+// ==============================================
+// 🔥 核心：全局存储请求任务，用于取消前一次请求
+// ==============================================
+const pendingRequests = new Map<string, any>()
+
+// 生成唯一 KEY：相同 url + method 视为同一个请求
+const getKey = (url: string, method?: string) => `${method || 'GET'}:${url}`
+
+// 取消前一次请求
+const cancelPrevious = (url: string, method?: string) => {
+  const key = getKey(url, method)
+  if (pendingRequests.has(key)) {
+    try {
+      pendingRequests.get(key).abort() // 🔥 真正中断请求
+    } catch {}
+    pendingRequests.delete(key)
+  }
+}
+
+// ==============================================
+// 核心请求
+// ==============================================
 const request = <T = any>(options: RequestOptions): Promise<ResponseData<T>> => {
-  // Record<string, string> 表示：这是一个对象，键可以是任意字符串，值也必须是字符串。
-  const header: Record<string, string> = {
+  const header: any = {
     'Content-Type': 'application/json;charset=UTF-8',
     ...options.header
   }
 
   const token = getToken()
-  if (token) {
-    header['token'] = token
-  }
+  if (token) header['Authorization'] = `Bearer ${token}`
 
   const url = config.baseUrl + options.url
+  const method = options.method || 'GET'
+  const reqKey = getKey(options.url, method)
 
-  return new Promise<ResponseData<T>>((resolve, reject) => {
-    uni.request({
-      url: url,
-      method: options.method || 'GET',
+  // ==============================================
+  // 🔥 关键：发送前先取消上一次相同请求
+  // ==============================================
+  cancelPrevious(options.url, method)
+
+  return new Promise((resolve, reject) => {
+    // 发起请求
+    const task = uni.request({
+      url,
+      method,
       data: options.data || {},
-      header: header,
+      header,
       timeout: config.timeout || 10000,
 
-      success(res) {
-        // res as unknown as { data: ResponseData<T> } 这行代码的作用是将 res 强制转换为一个包含 data 属性的对象，并且 data 的类型是 ResponseData<T>。这样做是为了让 TypeScript 知道 res.data 的结构和类型，从而在后续代码中能够正确地访问和使用 res.data 的属性。
-        /** res as unknown as T 是 TS 里的 “双重断言” 技巧：
-        先断言成 unknown（TS 允许任何类型转成 unknown）
-        再断言成目标类型（TS 允许 unknown 转成任何类型）
-        它明确告诉 TS：“我知道我在做什么，这里的类型转换是安全的，你不用再检查了。” */
-        const { data } = res as unknown as { data: ResponseData<T> }
+      complete: () => {
+        pendingRequests.delete(reqKey) // 请求结束清理
+      },
 
-        // 登录过期
-        if (data.code === 401) {
-          removeToken()
-          uni.reLaunch({ url: '/pages/login/login' })
-          return reject(data)
+      success: (res: any) => {
+        const statusCode = res.statusCode
+        if (statusCode === 401) {
+          const pages = getCurrentPages()
+          const currentPage = pages[pages.length - 1]
+          const fromUrl = currentPage ? `/${currentPage.route}` : '/pages/index/index'
+          setRedirectUrl(fromUrl)
+          uni.showToast({ title: '请先登录', icon: 'none' })
+          setTimeout(() => {
+            removeToken()
+            uni.navigateTo({ url: '/pages/login/index' })
+          }, 1000)
+          return reject(res.data)
         }
 
-        // 业务失败
+        const data = res.data
         if (data.code !== 200) {
-          uni.showToast({
-            title: data.msg || '请求失败',
-            icon: 'none'
-          })
+          if (data.code !== 500) {
+            uni.showToast({ title: data.msg || '请求失败', icon: 'none' })
+          }
           return reject(data)
         }
-
         resolve(data)
       },
 
-      fail(err) {
-        uni.showToast({
-          title: '网络异常',
-          icon: 'none'
-        })
+      fail: (err) => {
+        if (err?.errMsg?.includes('abort')) return // 被取消的请求不提示
+        uni.showToast({ title: '网络异常', icon: 'none' })
         reject(err)
       }
     })
+
+    // 保存当前请求，用于下次取消
+    pendingRequests.set(reqKey, task)
   })
 }
 
-// -------------- 导出 axios 风格调用 --------------
 export default {
-  get<T = any>(url: string, data?: any, options?: RequestOptions): Promise<ResponseData<T>> {
-    return request<T>({ url, method: 'GET', data, ...options })
-  },
-
-  post<T = any>(url: string, data?: any, options?: RequestOptions): Promise<ResponseData<T>> {
-    return request<T>({ url, method: 'POST', data, ...options })
-  },
-
-  put<T = any>(url: string, data?: any, options?: RequestOptions): Promise<ResponseData<T>> {
-    return request<T>({ url, method: 'PUT', data, ...options })
-  },
-
-  delete<T = any>(url: string, data?: any, options?: RequestOptions): Promise<ResponseData<T>> {
-    return request<T>({ url, method: 'DELETE', data, ...options })
-  }
+  get: <T = any>(url: string, data?: any, opt?: RequestOptions) =>
+    request<T>({ url, method: 'GET', data, ...opt }),
+  post: <T = any>(url: string, data?: any, opt?: RequestOptions) =>
+    request<T>({ url, method: 'POST', data, ...opt }),
+  put: <T = any>(url: string, data?: any, opt?: RequestOptions) =>
+    request<T>({ url, method: 'PUT', data, ...opt }),
+  delete: <T = any>(url: string, data?: any, opt?: RequestOptions) =>
+    request<T>({ url, method: 'DELETE', data, ...opt }),
 }

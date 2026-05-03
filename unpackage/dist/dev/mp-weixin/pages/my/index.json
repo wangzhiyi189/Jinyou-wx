@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "",
-  "usingComponents": {}
+  "usingComponents": {
+    "u-avatar": "../../node-modules/uview-plus/components/u-avatar/u-avatar"
+  }
 }

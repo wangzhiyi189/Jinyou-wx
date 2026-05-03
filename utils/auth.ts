@@ -19,3 +19,19 @@ export function setToken(token:string):void {
 export function removeToken():void {
   uni.removeStorageSync('token')
 }
+
+// 获取 用户信息
+export function getUser():string {
+  return uni.getStorageSync('user') || '';
+}
+
+// 设置 用户信息
+export function setUser(user:string):void {
+  uni.setStorageSync('user', user)
+}
+
+// 删除 用户信息
+
+export function removeUser():void {
+  uni.removeStorageSync('user')
+}

@@ -63,6 +63,7 @@ const getImg = (name: string): string => {
 
 <style lang="scss" scoped>
 .recommend{
+  position: relative;
   .title{
     font-size:$w-size-lg;
     color:$w-font-color-deep;
@@ -70,10 +71,23 @@ const getImg = (name: string): string => {
     display:flex;
     align-items:center;
     gap:$w-gap-sm;
+    font-weight: 600;
+    position: relative;
     .icon{
-      width:40rpx;
-      height:40rpx;
+      width:35rpx;
+      height:35rpx;
     }
+  }
+  .title::after {
+    content: "";
+    position: absolute;
+    left: 120rpx;
+    bottom: 0;
+    width: 60rpx; /* 可以根据需要调整，比如设为 80% 让线条比文字短一点 */
+    height: 6rpx; /* 线条高度 */
+    background: linear-gradient(90deg, #ff477e, #ff8c42, #ffd32a);
+    filter: blur(1px);
+    opacity: 0.9;
   }
   .list{
     display: flex;

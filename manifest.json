@@ -54,7 +54,8 @@
         "setting" : {
             "urlCheck" : false,
             "es6" : false,
-            "minified" : true
+            "minified" : true ,
+            "compileHotReLoad": false
         },
         "requiredPrivateInfos" : [ "getLocation" ],
         "permission" : {
@@ -62,7 +63,10 @@
                 "desc" : "用于获取当前位置"
             }
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "defineConstants": {
+            "ENABLE_HOT_RELOAD": true
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true

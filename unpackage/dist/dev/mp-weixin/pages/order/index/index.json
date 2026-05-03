@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "u-navbar": "../../../node-modules/uview-plus/components/u-navbar/u-navbar",
+    "u-icon": "../../../node-modules/uview-plus/components/u-icon/u-icon",
+    "u-input": "../../../node-modules/uview-plus/components/u-input/u-input",
+    "u-picker": "../../../node-modules/uview-plus/components/u-picker/u-picker",
+    "pax-module": "./paxModule",
+    "rmk-module": "./rmkModule",
+    "tabs-panel": "../../../components/tabsPanel/index"
+  }
+}

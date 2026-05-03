@@ -1,5 +1,8 @@
 <script>
 	export default {
+		globalData: {
+    	needRefreshTicketList: false // 默认不需要刷新
+  	},
 		onLaunch: function() {
 			console.log('App Launch')
 		},

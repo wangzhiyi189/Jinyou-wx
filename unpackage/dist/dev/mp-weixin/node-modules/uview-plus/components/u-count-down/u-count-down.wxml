@@ -1,0 +1,1 @@
+<view class="u-count-down data-v-bc345305"><block wx:if="{{$slots.d}}"><slot name="d"></slot><slot/></block><block wx:else><text class="u-count-down__text data-v-bc345305">{{a}}</text></block></view>

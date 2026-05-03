@@ -49,6 +49,7 @@
 				<BannerModel />
 			</view>
 			<Recommend />
+			<PopularModel />
 		</view>
 		<!-- 日期选择器 -->
 		<u-calendar title="选择出行时间" :show="calendarShow" @confirm="handleDateConfirm" @close="handleDateClose"></u-calendar>
@@ -65,8 +66,9 @@
 	import Recommend from '@/components/recommend/index.vue'
 	import { ref, reactive, onMounted, onUnmounted } from 'vue'
 	import { useLocationStore } from '@/store'
-	import TopBannerModel from './topBanner.vue';
-	import BannerModel from './banner.vue'
+	import TopBannerModel from './topBanner/index.vue';
+	import BannerModel from './banner/index.vue'
+	import PopularModel from './popular/index.vue';
 	const locationStore = useLocationStore()
 
 
@@ -79,16 +81,18 @@
 
 	// ===================== TS 改造备注：给表单定义严格类型 =====================
 	interface FormData {
-		start_address: string;
-		end_address: string;
-		date: string;
-		lunarDate: string;
+		start_address: string
+		end_address: string
+		date: string
+		lunarDate: string
+		time:string
 	}
 	const formData = reactive<FormData>({
-		start_address: '',
-		end_address: '',
+		start_address: '洪洞县',
+		end_address: '太原市',
 		date: '',
 		lunarDate: '',
+		time:'',
 	})
 
 	// ===================== TS 改造备注：给全局事件定义参数类型 =====================
@@ -142,9 +146,12 @@
 
 	// ===================== TS 改造备注：日期函数参数添加类型 =====================
 	const getDate = (now: Date = new Date()): void => {
-		const month = String(now.getMonth() + 1).padStart(2, '0');
-		const day = String(now.getDate()).padStart(2, '0');
+		const d = new Date(now);
+  	const year = d.getFullYear();
+  	const month = String(d.getMonth() + 1).padStart(2, '0');
+  	const day = String(d.getDate()).padStart(2, '0');
 		formData.date = `${month}月${day}日`;
+		formData.time = `${year}-${month}-${day}`;
 		const lunar = Lunar.fromDate(now);
 		formData.lunarDate = `${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
 	}
@@ -176,7 +183,14 @@
 	// 开始搜索车票
 	const handleTickets = (): void => {
 		console.log(formData);
-		uni.navigateTo({ url: `/pages/tickets/index` });
+		if(!formData.start_address || !formData.end_address){
+			uni.showToast({
+				title:'请选择出发和目的地',
+				icon:'none'
+			})
+			return 
+		}
+		uni.navigateTo({ url: `/pages/tickets/index?start=${formData.start_address}&end=${formData.end_address}&time=${formData.time}` });
 	}
 </script>
 

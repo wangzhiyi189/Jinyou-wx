@@ -2,7 +2,7 @@
 const common_vendor = require("../../../../common/vendor.js");
 const _sfc_main = {
   name: "u-tabs",
-  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$7],
+  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$12],
   data() {
     return {
       tabList: [],
@@ -57,7 +57,7 @@ const _sfc_main = {
       };
     },
     propsBadge() {
-      return common_vendor.props$8.badge;
+      return common_vendor.props$7.badge;
     }
   },
   async mounted() {

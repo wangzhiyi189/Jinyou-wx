@@ -10,7 +10,7 @@ const indexList = () => {
 };
 const _sfc_main = {
   name: "u-index-list",
-  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$5],
+  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$11],
   // 将自定义节点设置成虚拟的，更加接近Vue组件的表现，能更好的使用flex属性
   options: {
     virtualHost: true

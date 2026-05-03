@@ -7,13 +7,13 @@
     "uview-plus": {
       "src": "../../../../../node_modules/uview-plus/index.js",
       "file": "uview-plus.js",
-      "fileHash": "611d0932",
+      "fileHash": "df9eaf94",
       "needsInterop": false
     },
     "lunar-javascript": {
       "src": "../../../../../node_modules/lunar-javascript/index.js",
       "file": "lunar-javascript.js",
-      "fileHash": "d080470c",
+      "fileHash": "e349200c",
       "needsInterop": true
     }
   },

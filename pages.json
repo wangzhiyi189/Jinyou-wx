@@ -27,6 +27,18 @@
 			}
 		},
 		{
+			"path": "pages/my/passenger/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/my/passenger/add/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
 			"path": "pages/selectCity/index",
 			"style": {
 				"navigationBarTitleText": ""
@@ -39,17 +51,37 @@
 			}
 		},
 		{
-			"path": "pages/order/index",
+			"path": "pages/order/index/index",
 			"style": {
 				"navigationBarTitleText": ""
 			}
 		},
 		{
-			"path": "pages/login/login",
+			"path": "pages/order/payment/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/order/list/index",
+			"style": {
+				"v2": false,
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/order/detail/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/login/index",
 			"style": {
 				"navigationBarTitleText": ""
 			}
 		}
+		
 	],
 	"tabBar": {
     "color": "#CBCBCB",

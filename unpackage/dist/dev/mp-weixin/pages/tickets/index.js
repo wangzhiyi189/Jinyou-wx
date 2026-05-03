@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const api_core_ticket = require("../../api/core/ticket.js");
+const utils_date = require("../../utils/date.js");
 if (!Array) {
   const _easycom_u_navbar2 = common_vendor.resolveComponent("u-navbar");
   const _easycom_u_icon2 = common_vendor.resolveComponent("u-icon");
@@ -25,53 +26,65 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   setup(__props) {
     const title = common_vendor.ref("购买车票");
     const dateList = common_vendor.ref([]);
-    const active = common_vendor.ref(0);
+    const active = common_vendor.ref(2);
     const calendarShow = common_vendor.ref(false);
     const listData = common_vendor.ref([]);
+    const formData = common_vendor.reactive({
+      startCity: "",
+      endCity: "",
+      departDate: ""
+    });
     common_vendor.onMounted(() => {
-      dateList.value = getDaysIn15Days(15);
+      common_vendor.index.__f__("log", "at pages/tickets/index.vue:62", formData.departDate);
+      dateList.value = utils_date.getDays(8);
+      common_vendor.index.__f__("log", "at pages/tickets/index.vue:64", dateList.value);
+      active.value = handleActive(formData.departDate);
+    });
+    common_vendor.onLoad((options) => {
+      formData.departDate = options.time;
+      formData.startCity = options.start;
+      formData.endCity = options.end;
       requestTicketList();
+    });
+    common_vendor.onShow(() => {
+      const app = getApp();
+      if (app.globalData.needRefreshTicketList) {
+        requestTicketList();
+        app.globalData.needRefreshTicketList = false;
+      }
     });
     const requestTicketList = async () => {
-      const { message, data, code } = await api_core_ticket.getTicketList({
-        startCity: "洪洞",
-        endCity: "小店",
-        departDate: "2026-4-19"
-      });
-      common_vendor.index.__f__("log", "at pages/tickets/index.vue:69", data);
+      common_vendor.index.__f__("log", "at pages/tickets/index.vue:83", formData);
+      const { message, data, code } = await api_core_ticket.getTicketList(formData);
+      common_vendor.index.__f__("log", "at pages/tickets/index.vue:85", data);
       listData.value = data;
     };
-    common_vendor.onLoad((options) => {
-      console.group(options);
-    });
-    common_vendor.onReachBottom(() => {
-      common_vendor.index.__f__("log", "at pages/tickets/index.vue:77", "触底了");
-    });
-    const getDaysIn15Days = (num) => {
-      const week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
-      const today = /* @__PURE__ */ new Date();
-      return Array.from({ length: num }, (_, i) => {
-        const d = new Date(today.getTime() + i * 864e5);
-        const m = String(d.getMonth() + 1).padStart(2, "0");
-        const day = String(d.getDate()).padStart(2, "0");
-        return {
-          date: `${m}-${day}`,
-          week: i === 0 ? "今天" : week[d.getDay()]
-        };
-      });
+    const handleActive = (e) => {
+      const monthDay = e.slice(5);
+      return dateList.value.findIndex((item) => item.date === monthDay);
     };
+    common_vendor.onReachBottom(() => {
+      common_vendor.index.__f__("log", "at pages/tickets/index.vue:94", "触底了");
+    });
     const handleTabChange = (e) => {
-      common_vendor.index.__f__("log", "at pages/tickets/index.vue:93", e);
+      formData.departDate = formatToBackendDate(e.date);
+      requestTicketList();
+    };
+    const formatToBackendDate = (dateStr) => {
+      const currentYear = (/* @__PURE__ */ new Date()).getFullYear();
+      return `${currentYear}-${dateStr}`;
     };
     const handleCalendar = () => {
-      requestTicketList();
+      calendarShow.value = true;
     };
     const handleDateClose = () => {
       calendarShow.value = false;
     };
     const handleDateConfirm = (e) => {
-      common_vendor.index.__f__("log", "at pages/tickets/index.vue:103", e);
-      active.value = 8;
+      formData.departDate = e[0];
+      active.value = handleActive(e[0]);
+      requestTicketList();
+      handleDateClose();
     };
     const tipShow = common_vendor.ref(false);
     const TipTitle = common_vendor.ref("温馨提示");
@@ -138,7 +151,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         l: common_vendor.o(handleDateClose),
         m: common_vendor.p({
           title: "选择出行时间",
-          show: calendarShow.value
+          defaultDate: formData.departDate,
+          show: calendarShow.value,
+          maxDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1e3).toISOString().slice(0, 10)
         }),
         n: common_vendor.o(($event) => tipShow.value = false),
         o: common_vendor.p({

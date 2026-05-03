@@ -1,0 +1,155 @@
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 顶部导航高度 */
+/* 底部安全高度 */
+/* padding间距 */
+/* margin间距 */
+/* 文字大小 */
+/* 文字颜色 */
+/* 背景颜色 */
+/* 圆角 */
+/* 上下间距 */
+/* 盒子阴影 */
+.u-button {
+  height: 80rpx;
+}
+.u-button--primary {
+  background: linear-gradient(45deg, #febc22, #fa8208);
+  border: 0 !important;
+  background-color: transparent;
+}
+.u-button--primary .u-button__text {
+  font-size: 36rpx !important;
+  letter-spacing: 10rpx;
+}
+ .uni-button:after {
+  content: "";
+  border: 0;
+}
+.u-navbar .u-status-bar, .u-navbar .u-navbar__content {
+  background-color: #2979ff !important;
+}
+.u-navbar .u-status-bar .u-navbar__content__title, .u-navbar .u-navbar__content .u-navbar__content__title {
+  color: #fff;
+}
+.u-checkbox__label-wrap {
+  width: 100%;
+  margin-right: 20rpx;
+}
+
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+ .uni-tabbar-bottom .uni-tabbar__icon {
+  width: 48px;
+  height: 38px;
+}
+.pax-head {
+  display: flex;
+  gap: 10rpx;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  font-size: 28rpx;
+}
+.pax-head .head-title {
+  font-weight: 600;
+  font-size: 32rpx;
+}
+.pax-head .head-close {
+  color: #666;
+}
+.pax-head .head-submit {
+  color: orange;
+}
+.pax-module {
+  padding: 30rpx;
+  background-color: #f5f5f5;
+  max-height: 500rpx;
+  overflow-x: auto;
+}
+.pax-module .main {
+  background-color: #fff;
+  border-radius: 10rpx;
+}
+.pax-module .main .add {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  justify-content: center;
+  color: #2979ff;
+  font-size: 28rpx;
+  border-bottom: 1px solid #f0e5e5;
+  padding: 30rpx;
+}
+.pax-module .main .add .u-icon .u-icon__icon {
+  color: orange !important;
+  font-size: 36rpx !important;
+}
+.pax-module .main .list {
+  padding: 30rpx;
+}
+
+/* ========== ✅ 修复后的正确样式 ========== */
+/* 1. 直接命中你给组件加的 passeng-checkbox 类 */
+.passeng-checkbox {
+  width: 100%;
+  padding: 10rpx 0;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+.u-checkbox__label-wrap {
+  width: 100%;
+  flex-shrink: 0;
+  margin-right: 20rpx;
+}
+
+/* 3. 直接写你自定义的 address-info 样式，不依赖组件内部 */
+.address-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.address-info .info-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+.address-info .info-head .info-title {
+  font-size: 28rpx;
+  color: #333333;
+}
+.address-info .info-head .edit .u-icon {
+  color: #2979ff !important;
+  font-size: 40rpx !important;
+}
+.address-info .info-text {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  color: #666;
+  font-size: 24rpx;
+}

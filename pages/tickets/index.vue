@@ -25,21 +25,18 @@
 			<u-empty mode="search" text="亲未查询到可售班次" v-else></u-empty>
 		</view>
 		<!-- 日期选择器 -->
-		<u-calendar title="选择出行时间" :show="calendarShow" @confirm="handleDateConfirm" @close="handleDateClose"></u-calendar>
+		<u-calendar title="选择出行时间" :defaultDate="formData.departDate" :show="calendarShow" :maxDate="new Date(Date.now() + 7*24*60*60*1000).toISOString().slice(0, 10)" @confirm="handleDateConfirm" @close="handleDateClose"></u-calendar>
 		<!-- 提示框 -->
 		<u-modal :show="tipShow" :title="TipTitle" :content='TipContent' @confirm="tipShow = false"></u-modal>
 	</view>
 </template>
 
 <script setup lang="ts">
-	import {onMounted, ref} from 'vue';
-	import { onLoad , onReachBottom } from '@dcloudio/uni-app';
+	import {onMounted, ref , reactive} from 'vue';
+	import { onLoad , onReachBottom , onShow } from '@dcloudio/uni-app';
 	import { getTicketList } from '@/api'
 	import ticketCard from '@/components/ticketCard/index.vue'
-	interface DateData{
-		date:string,
-		week:string
-	}
+	import { DateData , getDays } from '@/utils/date'
 	interface TicketListData {
 		scheduleId: number; // 班次id
 		arriveTime: string; // 到达时间
@@ -53,55 +50,71 @@
 	}
 	const title = ref('购买车票')
 	const dateList = ref<DateData[]>([])
-	const active = ref(0)
+	const active = ref(2)
 	const calendarShow = ref(false)
 	const listData = ref<TicketListData[]>([])
+	const formData = reactive({
+		startCity:'',
+		endCity:'',
+		departDate:'',
+	})
 	onMounted(()=>{
-		dateList.value = getDaysIn15Days(15);
+		console.log(formData.departDate)
+		dateList.value = getDays(8);
+		console.log(dateList.value)
+		active.value = handleActive(formData.departDate);
+	})
+	onLoad(options => {
+		formData.departDate = options.time;
+		formData.startCity = options.start;
+		formData.endCity = options.end
 		requestTicketList();
+  })
+	onShow(()=>{
+		const app = getApp();
+		if (app.globalData!.needRefreshTicketList) {
+    	// 只有标记为 true 时，才刷新接口
+    	requestTicketList();
+    	// 刷新后重置标记，避免每次返回都刷新
+    	app.globalData!.needRefreshTicketList = false;
+  	}
 	})
 	const requestTicketList = async () => {
-		const {message,data,code} = await getTicketList({
-			startCity:'洪洞',
-			endCity:'小店',
-			departDate:'2026-4-19'
-		});
+		console.log(formData)
+		const {message,data,code} = await getTicketList(formData);
 		console.log(data)
 		listData.value = data;
 	}
-	onLoad(options => {
-    console.group(options)
-  })
+	const handleActive = (e : any) => {
+		const monthDay = e.slice(5);
+		return dateList.value.findIndex(item => item.date === monthDay);
+	}
 	// 上拉加载触发
   onReachBottom(()=>{
 		console.log('触底了')
 	}) 
-	const getDaysIn15Days = (num:number) : Array<DateData> => {
-		const week = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-  	const today = new Date()
-  	return Array.from({ length: num }, (_, i) => {
-  	  const d = new Date(today.getTime() + i * 86400000)
-  	  const m = String(d.getMonth() + 1).padStart(2, '0')
-  	  const day = String(d.getDate()).padStart(2, '0')
-  	  return {
-  	    date: `${m}-${day}`,
-  	    week: i === 0 ? '今天' : week[d.getDay()]
-  	  }
-  	})
-	}
 	const handleTabChange = (e : any) : void => {
-		console.log(e)
+		formData.departDate = formatToBackendDate(e.date);
+		requestTicketList();
+	}
+	const formatToBackendDate = (dateStr:string) => {
+  	// 1. 获取当前年份（比如 2026）
+  	const currentYear = new Date().getFullYear();
+  	// 2. 拼接成年-月-日格式
+  	return `${currentYear}-${dateStr}`;
 	}
 	const handleCalendar = () : void => {
-		// calendarShow.value = true
-		requestTicketList();
+		calendarShow.value = true
+		// requestTicketList();
 	}
 	const handleDateClose = () : void => {
 		calendarShow.value = false
 	}
 	const handleDateConfirm = (e : any) : void => {
-		console.log(e)
-		active.value = 8;
+		formData.departDate = e[0];
+		active.value = handleActive(e[0]);
+		requestTicketList();
+		handleDateClose()
 	}
 	const tipShow = ref<boolean>(false);
 	const TipTitle = ref<string>('温馨提示');

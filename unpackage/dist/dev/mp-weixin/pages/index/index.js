@@ -14,8 +14,8 @@ if (!Math) {
   (TopBannerModel + _easycom_u_button + BannerModel + Recommend + _easycom_u_calendar)();
 }
 const Recommend = () => "../../components/recommend/index.js";
-const TopBannerModel = () => "./topBanner.js";
-const BannerModel = () => "./banner.js";
+const TopBannerModel = () => "./topBanner/index.js";
+const BannerModel = () => "./banner/index.js";
 const _sfc_defineComponent = common_vendor.defineComponent({
   __name: "index",
   setup(__props) {
@@ -27,10 +27,11 @@ const _sfc_defineComponent = common_vendor.defineComponent({
     const calendarShow = common_vendor.ref(false);
     const opacity = common_vendor.ref(0);
     const formData = common_vendor.reactive({
-      start_address: "",
-      end_address: "",
+      start_address: "洪洞县",
+      end_address: "太原市",
       date: "",
-      lunarDate: ""
+      lunarDate: "",
+      time: ""
     });
     common_vendor.onMounted(() => {
       getDate();
@@ -65,12 +66,15 @@ const _sfc_defineComponent = common_vendor.defineComponent({
     });
     const handleLocation = async () => {
       await locationStore.getCurrentAddress();
-      common_vendor.index.__f__("log", "at pages/index/index.vue:140", locationStore);
+      common_vendor.index.__f__("log", "at pages/index/index.vue:142", locationStore);
     };
     const getDate = (now = /* @__PURE__ */ new Date()) => {
-      const month = String(now.getMonth() + 1).padStart(2, "0");
-      const day = String(now.getDate()).padStart(2, "0");
+      const d = new Date(now);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
       formData.date = `${month}月${day}日`;
+      formData.time = `${year}-${month}-${day}`;
       const lunar = Lunar.fromDate(now);
       formData.lunarDate = `${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`;
     };
@@ -92,8 +96,15 @@ const _sfc_defineComponent = common_vendor.defineComponent({
       common_vendor.index.navigateTo({ url: `/pages/selectCity/index?type=${e}` });
     };
     const handleTickets = () => {
-      common_vendor.index.__f__("log", "at pages/index/index.vue:178", formData);
-      common_vendor.index.navigateTo({ url: `/pages/tickets/index` });
+      common_vendor.index.__f__("log", "at pages/index/index.vue:183", formData);
+      if (!formData.start_address || !formData.end_address) {
+        common_vendor.index.showToast({
+          title: "请选择出发和目的地",
+          icon: "none"
+        });
+        return;
+      }
+      common_vendor.index.navigateTo({ url: `/pages/tickets/index?start=${formData.start_address}&end=${formData.end_address}&time=${formData.time}` });
     };
     return (_ctx, _cache) => {
       return {

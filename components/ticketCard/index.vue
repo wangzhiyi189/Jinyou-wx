@@ -1,39 +1,68 @@
 <template>
-  <div class="ticket-card" @click="handleDetail">
-      <div class="time-row">
-        <div class="start-time">{{ dateFormat(data?.departTime) }}</div>
-        <div class="arrive-time" @click.stop>
+  <view class="ticket-card" :class="(!isPassed && !isNoTicket) || 'expired'" @click="handleDetail" >
+      <view class="time-row">
+        <view class="start-time">{{ dateFormat(data?.departTime) }}</view>
+        <view class="arrive-time" @click.stop>
           预计{{dateFormat(data?.arriveTime)}}到达
           <u-icon name="info-circle" @click="handleUnit"></u-icon>
-        </div>
-      </div>
-      <div class="station-row">
+        </view>
+      </view>
+      <view class="station-row">
         {{cityJson(data?.startCity)}} <span>→</span> {{cityJson(data?.endCity)}}
-      </div>
-      <div class="info-row">
-        <div class="price">
+      </view>
+      <view class="info-row">
+        <view class="price">
           <span class="unit">¥</span>
           <span class="value">{{ data?.price }}</span>
-        </div>
-        <div class="stock stock-normal">余票：{{ data?.seatRemaining }}张</div>
-      </div>
-  </div>
+        </view>
+        <view class="stock stock-normal">
+          <!-- 没票了 -->
+          <span v-if="isNoTicket">
+            无票
+          </span>
+          <!-- 已发车 -->
+          <span v-else-if="isPassed">
+            已发车
+          </span>
+          <span v-else>
+            余票：{{ data?.seatRemaining }}张
+          </span>
+        </view>
+      </view>
+  </view>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref,defineEmits } from 'vue'
+import { onMounted, ref,defineEmits , watch } from 'vue'
+import { isDepartTimePassed } from '@/utils/date'
 // 获取父组件传过来的数据
 const props = defineProps({
   data: Object
 })
 // 获取父组件传过来的方法
 const emit = defineEmits(['unit'])
+const isPassed = ref(false)
+const isNoTicket = ref(false)
 onMounted(()=>{
   
 }) 
-const handleDetail = () : void => {
+watch(props.data, (newVal : any) => { 
+  isPassed.value = isDepartTimePassed(props.data?.departTime)
+  if(props.data?.seatRemaining == 0){
+    isNoTicket.value = true
+  }
+},{immediate: true})
+const handleDetail = () => {
+  if(isPassed.value)return uni.showToast({
+    title:'已过发车时间，请更换出行日期',
+    icon:'none'
+  })
+  if(isNoTicket.value)return uni.showToast({
+    title:'该班次余票不足，请选择其他班次',
+    icon:'none'
+  })
   const id = props.data?.scheduleId
-  uni.navigateTo({url: `/pages/order/index?type=${id}`})
+  uni.navigateTo({url: `/pages/order/index/index?id=${id}`})
 }
 const cityJson = (e : string) : string => {
   let cityArray = JSON.parse(e);
@@ -52,6 +81,9 @@ const handleUnit = () : void => {
 </script>
 
 <style scoped lang="scss">
+.expired{
+  opacity: 0.5;
+}
  .ticket-card {
   background: #fff;
   border-radius: 24rpx;
@@ -61,7 +93,6 @@ const handleUnit = () : void => {
   cursor: pointer;
   transition: transform 0.2s;
   -webkit-tap-highlight-color: transparent;
-  tap-highlight-color: transparent;
   cursor: pointer; /* 保留鼠标悬浮的手型样式 */
   /* 时间区域 */
   .time-row {
